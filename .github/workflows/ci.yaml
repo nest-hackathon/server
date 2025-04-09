@@ -1,0 +1,30 @@
+name: Go CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    name: Build and Run Go Project
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Go environment
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+
+      - name: Install Go dependencies
+        run: go mod tidy
+
+      - name: Build the application
+        run: go build -o app ./cmd/app/main.go
+
+      - name: Run the application
+        run: ./app
