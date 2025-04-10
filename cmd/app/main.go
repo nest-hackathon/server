@@ -1,9 +1,17 @@
 package main
 
 import (
-	"fmt"
+	"log"
+	"os"
+
+	"github.com/nest-hackathon/server/internal/server"
 )
 
 func main() {
-	fmt.Println("Hello, from api!")
+	server := server.NewServer()
+
+	if err := server.Start(); err != nil {
+		os.Exit(1)
+		log.Fatalf("Failed to start server: %v", err)
+	}
 }
