@@ -12,7 +12,7 @@ type Database struct {
 
 func NewDatabase(cfg *config.Config) (*Database, error) {
 
-	db, err := sql.Open("sqlite3", "./db/dev.db")
+	db, err := sql.Open("sqlite3", cfg.DbUrl)
 	if err != nil {
 		return nil, err
 	}

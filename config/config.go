@@ -9,7 +9,7 @@ import (
 type Config struct {
 	Port    string
 	DbUrl   string
-	DbName  string
+	JwtKey  string
 }
 
 func LoadConfig() *Config {
@@ -18,19 +18,19 @@ func LoadConfig() *Config {
 		log.Fatalf("Failed to load PORT environment variable: %v", err)
 	}
 
-	dbUrl, err := pkg.LoadEnv("DB_URL", "")
+	dbUrl, err := pkg.LoadEnv("DB_PATH", "")
 	if err != nil {
-		log.Fatalf("Failed to load DB_URL environment variable: %v", err)
+		log.Fatalf("Failed to load DB_PATH environment variable: %v", err)
 	}
 
-	dbName, err := pkg.LoadEnv("DB_NAME", "")
+	jwtKey , err := pkg.LoadEnv("JWT_KEY", "")
 	if err != nil {
-		log.Fatalf("Failed to load DB_NAME environment variable: %v", err)
+		log.Fatalf("Failed to load JWT_KEY environment variable: %v", err)
 	}
 
 	return &Config{
 		Port:    port,
 		DbUrl:   dbUrl,
-		DbName:  dbName,
+		JwtKey:  jwtKey,
 	}
 }
