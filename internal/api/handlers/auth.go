@@ -13,7 +13,7 @@ type Handler struct {
 	db *database.DatabaseImpl
 }
 
-func NewHandler(db *database.DatabaseImpl) *Handler {
+func NewAuthHandler(db *database.DatabaseImpl) *Handler {
 	return &Handler{db: db}
 }
 
