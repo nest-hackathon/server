@@ -1,27 +1,36 @@
 package main
 
 import (
-	"log"
-
-	"github.com/nest-hackathon/server/config"
-	"github.com/nest-hackathon/server/internal/infra/db"
-	"github.com/nest-hackathon/server/internal/server"
+        "bufio"
+        "fmt"
+        "net"
 )
 
 func main() {
-	cfg := config.LoadConfig()
+        listen, err := net.Listen("tcp", ":8080")
+        if err != nil {
+                panic(err)
+        }
+        defer listen.Close()
+        fmt.Println("Server is listening on port 8080...")
 
-	db, err := db.NewDatabase(cfg)
-	if err != nil {
-		log.Fatalf("Failed to connect to database: %v", err)
-	}
-	defer db.Close()
+        for {
+                conn, err := listen.Accept()
+                if err != nil {
+                        fmt.Println("Error accepting connection:", err)
+                        continue
+                }
+                go handleConnection(conn)
+        }
+}
 
-	server := server.NewServer()
+func handleConnection(conn net.Conn) {
+        defer conn.Close()
+        fmt.Println("New client connected:", conn.RemoteAddr())
 
-	if err := server.Start(); err != nil {
-		log.Fatalf("Failed to start server: %v", err)
-	}
-
-	
+        scanner := bufio.NewScanner(conn)
+        for scanner.Scan() {
+                msg := scanner.Text()
+                fmt.Printf("Received: %s\n", msg)
+        }
 }
